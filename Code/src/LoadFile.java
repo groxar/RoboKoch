@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 
 public class LoadFile {
-	// TODO enum für vor, nach, gleich ....
+	// TODO enum fuer vor, nach, gleich ....
 	public enum Relation {
 		 VOR, NACH, GLEICH, START, STARTI, FINISH, FINISHI, DURING, DURINGI, OVERLAY, OVERLAYI, MEETS, MEETSI;
 	}
