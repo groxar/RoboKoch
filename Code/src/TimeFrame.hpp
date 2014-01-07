@@ -24,6 +24,8 @@ class TimeFrame{
 		void addRelation(const Point& lhs, const Point& rhs, const PointRelation& rel);
 		bool isConsistent();
 		bool isConsistent(const Point& a, const Point& b) const;
+		PointRelation getCRelation(const Point& a, const Point& b) const;
+		PointRelation getRelation(const Point& a, const Point& b) const;
 		vector<vector<Point>> getRoutes(const Point& start, const Point& target) const;
 		set<Point> getNeighbours(const Point& target) const;
 		void print();

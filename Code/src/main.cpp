@@ -13,6 +13,7 @@ int main(int argc, const char *argv[]) {
 	Point c(0);
 	Point e(0);
 	Point lonePoint(0);
+	Point z(0);
 	PointRelation ab( axiomSet({d,di}) );
 	PointRelation ac( axiomSet({f,fi}) );
 	PointRelation bc( axiomSet({di,d }) );
@@ -44,6 +45,13 @@ int main(int argc, const char *argv[]) {
 	tf.addRelation(a,lonePoint,a_lonePoint);
 	tf.print();
 
+	cout <<"relation b e: "<< tf.getRelation(b,e)<< endl;
+	cout <<"relation e b: "<< tf.getRelation(e,b)<< endl;
+	cout <<"relation e z: "<< tf.getRelation(e,z)<< endl;
+	cout <<"relation a e: "<< tf.getRelation(a,e)<< endl;
+	cout <<"Crelation a e: "<< tf.getCRelation(a,e)<< endl;
+	cout <<"axiomSet({}).size() "<< axiomSet({}).size()<< endl;
+
 	cout << "isConsitent lonePoint: " << tf.isConsistent(b,lonePoint) << endl;
 	set<Point> ps = tf.getNeighbours(a);
 	for( Point p : ps)
@@ -55,7 +63,7 @@ int main(int argc, const char *argv[]) {
 
 	//route finder
 	cout << "Route test" << endl;
-	vector<vector<Point>> vvp = tf.getRoutes(lonePoint,b);
+	vector<vector<Point>> vvp = tf.getRoutes(a,e);
 	for (auto route : vvp)
 	{
 		for(Point p : route)

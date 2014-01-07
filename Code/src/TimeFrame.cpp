@@ -31,12 +31,45 @@ set<Point> TimeFrame::getNeighbours(const Point& target) const{
 
 
 bool TimeFrame::isConsistent(const Point& a, const Point& b) const{
-	if(this->getNeighbours(a).size() == 1 || this->getNeighbours(b).size() == 1) //TODO exchange to route list
-		return true;
-	else
-		return false;
+	return getCRelation(a,b).relation.size()!=0;
 }
 
+//TODO rework
+PointRelation TimeFrame::getCRelation(const Point& a, const Point&b) const{
+	auto routes = getRoutes(a,b);
+	Point crntPos;
+	PointRelation temp(axiomSet({}));
+	PointRelation result(axiomSet({eq,st,gt,d,di,o,oi,s,si,f,fi}));
+
+	if(routes.size() == 0)
+	{
+		return temp;
+	}
+
+	for(auto route : routes){
+		auto end = route.end();
+		auto it = route.begin();
+		crntPos = *(it+1);
+		result = getRelation(*it,crntPos);
+		it+=2;
+		for(; it!=end; ++it){
+			temp = P(temp,getRelation(crntPos,*it));
+			crntPos = *it;
+		}
+		result = result / temp;	
+	}
+	return temp;
+}
+
+PointRelation TimeFrame::getRelation(const Point& a, const Point&b) const{
+	for(auto pr : pointRelList){
+		if(pr.first.first.getId() == a.getId() && pr.first.second.getId() == b.getId())
+			return pr.second; 
+		else if(pr.first.first.getId() == b.getId() && pr.first.second.getId() == a.getId())
+			return !(pr.second);
+	}
+	return axiomSet({});
+}
 
 vector<vector<Point>> TimeFrame::getRoutes(const Point& start, const Point& target) const{
 	return getInvRoutes(target,start,set<int>());
