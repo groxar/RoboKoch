@@ -7,34 +7,34 @@
 
 using namespace ::std;
 
-enum axiom{eq=0,st=1,gt=2,d=3,di=4,o=5,oi=6,m=7,mi=8,s=9,si=10,f=11,fi=12};
+enum axiom {eq=0,st=1,gt=2,d=3,di=4,o=5,oi=6,m=7,mi=8,s=9,si=10,f=11,fi=12};
 struct axiom_compare {
-	bool operator() (const axiom lhs,const axiom rhs) const{
-		return lhs < rhs; 
+	bool operator() (const axiom lhs,const axiom rhs) const {
+		return lhs < rhs;
 	}
 };
 typedef set<axiom,axiom_compare> axiomSet;
 
-class PointRelation{
-	public:
-		PointRelation(axiomSet relation = axiomSet({}), int duration = -1);
-		~PointRelation();
-		PointRelation& operator= (const PointRelation rhs);
-		PointRelation operator! ();
-		friend PointRelation P(const PointRelation lhs, const PointRelation rhs);
-		friend PointRelation operator* (const PointRelation lhs, const PointRelation rhs);
-		friend PointRelation operator/ (const PointRelation lhs, const PointRelation rhs);
-		friend ostream& operator << (ostream& os, const PointRelation& rhs); 
-		int getDuration();
-		axiomSet relation;
-	private: 
-		int duration;
+class PointRelation {
+  public:
+	PointRelation(axiomSet relation = axiomSet({}), int duration = -1);
+	~PointRelation();
+	PointRelation& operator= (const PointRelation rhs);
+	PointRelation operator! ();
+	friend PointRelation P(const PointRelation lhs, const PointRelation rhs);
+	friend PointRelation operator* (const PointRelation lhs, const PointRelation rhs);
+	friend PointRelation operator/ (const PointRelation lhs, const PointRelation rhs);
+	friend ostream& operator<< (ostream& os, const PointRelation& rhs);
+	int getDuration();
+	axiomSet relation;
+  private:
+	int duration;
 };
 
 PointRelation P(const PointRelation lhs, const PointRelation rhs);
 PointRelation operator* (const PointRelation lhs, const PointRelation rhs);
 PointRelation operator/ (const PointRelation lhs, const PointRelation rhs);
-ostream& operator << (ostream& os, const PointRelation& rhs); 
+ostream& operator<< (ostream& os, const PointRelation& rhs);
 
 
 
