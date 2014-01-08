@@ -10,6 +10,7 @@ PointRelation::~PointRelation() {
 PointRelation& PointRelation::operator= (const PointRelation rhs) {
 	relation = rhs.relation;
 	duration = rhs.duration;
+    return *this;
 }
 
 PointRelation PointRelation::operator! () {
@@ -41,7 +42,7 @@ PointRelation P(const PointRelation lhs, const PointRelation rhs) {
 			result.insert(PTable[*lit][*rit].begin(),PTable[*lit][*rit].end());
 		}
 	}
-	return result;
+	return PointRelation(result);
 }
 
 PointRelation operator* (const PointRelation lhs, const PointRelation rhs) {

@@ -17,7 +17,7 @@ typedef set<axiom,axiom_compare> axiomSet;
 
 class PointRelation{
 	public:
-		PointRelation(axiomSet relation, int duration = -1);
+		PointRelation(axiomSet relation = axiomSet({}), int duration = -1);
 		~PointRelation();
 		PointRelation& operator= (const PointRelation rhs);
 		PointRelation operator! ();

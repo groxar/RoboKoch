@@ -22,8 +22,8 @@ int Point::getTime() const{
 
 //only needed for sets of Points
 bool Point::operator <(const Point& rhs) const{
-	this->id < rhs.id;
+	return this->id < rhs.id;
 }
 bool Point::operator==(const Point& rhs) const{
-	this->id == rhs.id;
+	return this->id == rhs.id;
 }
