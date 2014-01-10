@@ -5,7 +5,7 @@ axiomSet operator! (const axiomSet& rhs) {
 
 	axiomSet::iterator end = rhs.end();
 	for (axiomSet::iterator it = rhs.begin(); it != end; ++it) {
-		if (*it == 0)
+		if (*it == eq)
 			inverted.insert(eq);
 		else if (*it % 2)
 			inverted.insert(static_cast<axiom>((*it)+1));

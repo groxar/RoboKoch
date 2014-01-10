@@ -22,7 +22,7 @@ int main() {
 	axiomSet ea({s,si});
 	axiomSet a_loneInterval({s,si});
 	axiomSet emptyRel;
-	axiomSet pr = be;
+	axiomSet pr({oi,eq});
 
 	//interval test
 	cout <<"a == b "<< (a == b) << endl;

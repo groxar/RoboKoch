@@ -1,22 +1,22 @@
 #include "Interval.hpp"
 
-Interval::Interval(int duration): duration(duration) {
-	static int idCounter = 0;
+Interval::Interval(unsigned int duration): duration(duration) {
+	static unsigned int idCounter = 0;
 	id = idCounter;
 	idCounter++;
 }
 
-Interval::Interval(const Interval& point): id(point.id), duration(point.duration) {
+Interval::Interval(const Interval& interval): id(interval.id), duration(interval.duration) {
 }
 
 Interval::~Interval() {
 }
 
-int Interval::getId() const {
+unsigned int Interval::getId() const {
 	return id;
 }
 
-int Interval::getDuration() const {
+unsigned int Interval::getDuration() const {
 	return duration;
 }
 

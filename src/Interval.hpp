@@ -6,15 +6,19 @@ using namespace ::std;
 
 class Interval {
   public:
-	Interval(int duration = -1);
-	Interval(const Interval& point);
+	Interval(unsigned int duration = 0);
+	Interval(const Interval& interval);
 	~Interval();
-	int getId() const;
-	int getDuration() const;
+	unsigned int getId() const;
+	unsigned int getDuration() const;
 	bool operator< (const Interval& rhs) const;
 	bool operator== (const Interval& rhs) const;
   private:
-	int id;
-	int duration;
+	unsigned int id;
+	unsigned int duration;
+	struct time{
+		int start;
+		int end;
+	};
 };
 
