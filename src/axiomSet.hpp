@@ -15,26 +15,11 @@ struct axiom_compare {
 };
 typedef set<axiom,axiom_compare> axiomSet;
 
-class PointRelation {
-  public:
-	PointRelation(axiomSet relation = axiomSet({}), int duration = -1);
-	~PointRelation();
-	PointRelation& operator= (const PointRelation rhs);
-	PointRelation operator! ();
-	friend PointRelation P(const PointRelation lhs, const PointRelation rhs);
-	friend PointRelation operator* (const PointRelation lhs, const PointRelation rhs);
-	friend PointRelation operator/ (const PointRelation lhs, const PointRelation rhs);
-	friend ostream& operator<< (ostream& os, const PointRelation& rhs);
-	int getDuration();
-	axiomSet relation;
-  private:
-	int duration;
-};
-
-PointRelation P(const PointRelation lhs, const PointRelation rhs);
-PointRelation operator* (const PointRelation lhs, const PointRelation rhs);
-PointRelation operator/ (const PointRelation lhs, const PointRelation rhs);
-ostream& operator<< (ostream& os, const PointRelation& rhs);
+axiomSet operator! (const axiomSet& rhs);
+axiomSet P(const axiomSet& lhs, const axiomSet& rhs);
+axiomSet operator* (const axiomSet& lhs, const axiomSet& rhs);
+axiomSet operator/ (const axiomSet& lhs, const axiomSet& rhs);
+ostream& operator<< (ostream& os, const axiomSet& rhs);
 
 
 

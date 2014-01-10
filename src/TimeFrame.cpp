@@ -6,24 +6,24 @@ TimeFrame::TimeFrame() {
 TimeFrame::~TimeFrame() {
 }
 
-void TimeFrame::addRelation(const Point& lhs,const Point& rhs,const PointRelation& rel) {
-	if (this->getRelation(lhs,rhs).relation.size()==0) {
-		pointRelList.insert(make_pair(make_pair(lhs,rhs),rel));
+void TimeFrame::addRelation(const Interval& lhs,const Interval& rhs,const axiomSet& rel) {
+	if (this->getRelation(lhs,rhs).size()==0) {
+		intervalRelList.insert(make_pair(make_pair(lhs,rhs),rel));
 	} else {
 		//throw
-		cout<< "the points already have a relation"<<endl;
+		cout<< "the intervals already have a relation"<<endl;
 	}
 }
 
 void TimeFrame::print() {
-	for (auto pr : pointRelList) {
+	for (auto pr : intervalRelList) {
 		cout << pr.first.first.getId() << " -> " << pr.first.second.getId()<<": "<< pr.second << endl;
 	}
 }
 
-set<Point> TimeFrame::getNeighbours(const Point& target) const {
-	set<Point> result;
-	for (auto pr : pointRelList) {
+set<Interval> TimeFrame::getNeighbours(const Interval& target) const {
+	set<Interval> result;
+	for (auto pr : intervalRelList) {
 		if (pr.first.first == target)
 			result.insert(pr.first.second);
 		else if (pr.first.second == target)
@@ -33,21 +33,21 @@ set<Point> TimeFrame::getNeighbours(const Point& target) const {
 }
 
 
-bool TimeFrame::isConsistent(const Point& a, const Point& b) const {
-	return getCRelation(a,b).relation.size()!=0;
+bool TimeFrame::isConsistent(const Interval& a, const Interval& b) const {
+	return getCRelation(a,b).size()!=0;
 }
 
 TimeFrame TimeFrame::getCTimeFrame() {
 	TimeFrame result;
-	PointRelation consistentRel;
+	axiomSet consistentRel;
 
-	for (auto pointRel : this->pointRelList) {
-		consistentRel = this->getCRelation(pointRel.first.first,pointRel.first.second);
-		if (consistentRel.relation.size()==0) {
+	for (auto intervalRel : this->intervalRelList) {
+		consistentRel = this->getCRelation(intervalRel.first.first,intervalRel.first.second);
+		if (consistentRel.size()==0) {
 			cout << "throw inconsistency found"<< endl;
 			return TimeFrame();
 		}
-		result.addRelation(pointRel.first.first,pointRel.first.second,consistentRel);
+		result.addRelation(intervalRel.first.first,intervalRel.first.second,consistentRel);
 	}
 	if ((*this) == result)
 		return result;
@@ -55,11 +55,11 @@ TimeFrame TimeFrame::getCTimeFrame() {
 	return result.getCTimeFrame();
 }
 
-PointRelation TimeFrame::getCRelation(const Point& a, const Point&b) const {
+axiomSet TimeFrame::getCRelation(const Interval& a, const Interval&b) const {
 	auto routes = getRoutes(a,b);
-	Point crntPos;
-	PointRelation temp;
-	PointRelation result(axiomSet({eq,st,gt,d,di,o,oi,s,si,f,fi}));
+	Interval crntPos;
+	axiomSet temp;
+	axiomSet result(axiomSet({eq,st,gt,d,di,o,oi,s,si,f,fi}));
 
 	if (routes.size() == 0) {
 		return temp;//empty Relationset
@@ -80,26 +80,26 @@ PointRelation TimeFrame::getCRelation(const Point& a, const Point&b) const {
 	return result;
 }
 
-PointRelation TimeFrame::getRelation(const Point& a, const Point&b) const {
-	for (auto pr : pointRelList) {
+axiomSet TimeFrame::getRelation(const Interval& a, const Interval&b) const {
+	for (auto pr : intervalRelList) {
 		if (pr.first.first == a && pr.first.second == b)
 			return pr.second;
 		else if (pr.first.first == b && pr.first.second == a)
 			return !(pr.second);
 	}
-	return PointRelation(axiomSet({}));
+	return axiomSet({});
 }
 
-vector<vector<Point>> TimeFrame::getRoutes(const Point& start, const Point& target) const {
+vector<vector<Interval>> TimeFrame::getRoutes(const Interval& start, const Interval& target) const {
 	return getInvRoutes(target,start,set<int>());
 }
 
 
-vector<vector<Point>> TimeFrame::getInvRoutes(const Point& current, const Point& target, set<int> closed) const {
-	vector<future<vector<vector<Point>>>> futureRoutes;
-	vector<vector<Point>> result;
-	vector<Point> route;
-	set<Point> n = this->getNeighbours(current);
+vector<vector<Interval>> TimeFrame::getInvRoutes(const Interval& current, const Interval& target, set<int> closed) const {
+	vector<future<vector<vector<Interval>>>> futureRoutes;
+	vector<vector<Interval>> result;
+	vector<Interval> route;
+	set<Interval> n = this->getNeighbours(current);
 	closed.insert(current.getId());
 
 	if (current == target) {
@@ -108,7 +108,7 @@ vector<vector<Point>> TimeFrame::getInvRoutes(const Point& current, const Point&
 		return result;
 	}
 
-	for (const Point p : n) {
+	for (const Interval p : n) {
 		if (closed.find(p.getId()) == closed.end())
 			futureRoutes.push_back(std::async(&TimeFrame::getInvRoutes,this,p,target,set<int>(closed)));
 	}
@@ -131,13 +131,13 @@ vector<vector<Point>> TimeFrame::getInvRoutes(const Point& current, const Point&
 }
 
 bool TimeFrame::operator== (const TimeFrame& rhs) {
-	if ((this->pointRelList.size() != rhs.pointRelList.size()))
+	if ((this->intervalRelList.size() != rhs.intervalRelList.size()))
 		return false;
 
-	PointRelation temp;
-	for (auto pointRel: pointRelList) {
-		temp = rhs.getRelation(pointRel.first.first,pointRel.first.second);
-		if (!((axiomSet)pointRel.second.relation == temp.relation))
+	axiomSet temp;
+	for (auto intervalRel: intervalRelList) {
+		temp = rhs.getRelation(intervalRel.first.first,intervalRel.first.second);
+		if (!((axiomSet)intervalRel.second == temp))
 			return false;
 	}
 	return true;

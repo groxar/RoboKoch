@@ -1,5 +1,5 @@
-#include "Point.hpp"
-#include "PointRelation.hpp"
+#include "Interval.hpp"
+#include "axiomSet.hpp"
 #include "TimeFrame.hpp"
 #include <iostream>
 #include <vector>
@@ -8,23 +8,23 @@ using namespace std;
 
 
 int main() {
-	Point a;
-	Point b;
-	Point c;
-	Point e;
-	Point lonePoint;
-	Point z;
-	PointRelation ab( axiomSet({d,di}) );
-	PointRelation ac( axiomSet({f,fi}) );
-	PointRelation bc( axiomSet({di,d }) );
-	PointRelation be( axiomSet({oi}) );
-	PointRelation ec( axiomSet({s,si}) );
-	PointRelation ea( axiomSet({s,si}) );
-	PointRelation a_lonePoint( axiomSet({s,si}) );
-	PointRelation emptyRel;
-	PointRelation pr = be;
+	Interval a;
+	Interval b;
+	Interval c;
+	Interval e;
+	Interval loneInterval;
+	Interval z;
+	axiomSet ab({d,di});
+	axiomSet ac({f,fi});
+	axiomSet bc({di,d});
+	axiomSet be({oi});
+	axiomSet ec({s,si});
+	axiomSet ea({s,si});
+	axiomSet a_loneInterval({s,si});
+	axiomSet emptyRel;
+	axiomSet pr = be;
 
-	//point test
+	//interval test
 	cout <<"a == b "<< (a == b) << endl;
 	cout <<"a == a "<< (a == a) << endl;
 
@@ -35,17 +35,16 @@ int main() {
 	cout <<"!eq axiomSet "<< (axiomSet({di,si,fi}) == axiomSet({di,si})) << endl;
 
 	//relation test
-	cout <<"Id: "<<  a.getId()<< " Time: "<< a.getTime() << endl;
-	cout <<"Id: "<<  b.getId()<< " Time: "<< b.getTime() << endl;
+	cout <<"Id: "<<  a.getId()<< " Duration: "<< a.getDuration() << endl;
+	cout <<"Id: "<<  b.getId()<< " Duration: "<< b.getDuration() << endl;
 	cout <<"pr: "<<  pr << endl;
 	cout <<"!pr: "<< !pr << endl;
 	cout <<"pr * !pr: "<< pr * !pr << endl;
 	cout <<"pr / !pr: "<< pr / !pr << endl;
 	cout <<"P(pr,pr): "<< P(pr,pr) << endl;
 	cout <<"P(pr,!pr): "<< P(pr,!pr) << endl;
-	cout <<"P({d},{si}): "<< P( PointRelation(axiomSet({d})),PointRelation(axiomSet({si}))) << endl;
-	cout <<"empty relation size     " << emptyRel.relation.size()<<endl;
-	cout <<"empty relation duration " << emptyRel.getDuration()  <<endl;
+	cout <<"P({d},{si}): "<< P( axiomSet({d}),axiomSet({si})) << endl;
+	cout <<"empty relation size     " << emptyRel.size()<<endl;
 
 	//timeframe test
 	//inconsistent timeframe test
@@ -57,7 +56,7 @@ int main() {
 	tf.addRelation(b,e,be);
 	tf.addRelation(e,c,ec);
 	tf.addRelation(e,a,ea);
-	tf.addRelation(a,lonePoint,a_lonePoint);
+	tf.addRelation(a,loneInterval,a_loneInterval);
 	tf.print();
 	cout <<"relation b e: " << tf.getRelation(b,e)<< endl;
 	cout <<"relation e b: " << tf.getRelation(e,b)<< endl;
@@ -83,10 +82,10 @@ int main() {
 	cout << "ctf == tf " << (ctf == tf) << endl;
 
 
-	cout << "isConsitent lonePoint: " << tf.isConsistent(b,lonePoint) << endl;
-	set<Point> ps = tf.getNeighbours(a);
+	cout << "isConsitent loneInterval: " << tf.isConsistent(b,loneInterval) << endl;
+	set<Interval> ps = tf.getNeighbours(a);
 	cout << "getNeighbours(a) ";
-	for ( Point p : ps) {
+	for ( Interval p : ps) {
 		cout << p.getId() << " ";
 	}
 	cout << endl;
@@ -94,9 +93,9 @@ int main() {
 
 	//route finder
 	cout << "Route test" << endl;
-	vector<vector<Point>> vvp = tf.getRoutes(a,e);
+	vector<vector<Interval>> vvp = tf.getRoutes(a,e);
 	for (auto route : vvp) {
-		for (Point p : route)
+		for (Interval p : route)
 			cout << p.getId() << " ";
 		cout << endl;
 	}
