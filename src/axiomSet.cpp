@@ -3,14 +3,13 @@
 axiomSet operator! (const axiomSet& rhs) {
 	axiomSet inverted;
 
-	axiomSet::iterator end = rhs.end();
-	for (axiomSet::iterator it = rhs.begin(); it != end; ++it) {
-		if (*it == eq)
+	for (axiom a : rhs) {
+		if (a == eq)
 			inverted.insert(eq);
-		else if (*it % 2)
-			inverted.insert(static_cast<axiom>((*it)+1));
+		else if (a % 2)
+			inverted.insert(static_cast<axiom>((a)+1));
 		else
-			inverted.insert(static_cast<axiom>((*it)-1));
+			inverted.insert(static_cast<axiom>((a)-1));
 	}
 	return inverted;
 }
@@ -19,11 +18,9 @@ axiomSet operator! (const axiomSet& rhs) {
 axiomSet P(const axiomSet& lhs, const axiomSet& rhs) {
 	axiomSet result;
 
-	axiomSet::iterator lend = lhs.end();
-	axiomSet::iterator rend = rhs.end();
-	for (axiomSet::iterator lit = lhs.begin(); lit != lend; ++lit) {
-		for (axiomSet::iterator rit = rhs.begin(); rit != rend; ++rit) {
-			result.insert(PTable[*lit][*rit].begin(),PTable[*lit][*rit].end());
+	for (axiom l : lhs) {
+		for (axiom r : rhs) {
+			result.insert(PTable[l][r].begin(),PTable[l][r].end());
 		}
 	}
 	return result;
@@ -32,14 +29,12 @@ axiomSet P(const axiomSet& lhs, const axiomSet& rhs) {
 axiomSet operator* (const axiomSet& lhs, const axiomSet& rhs) {
 	axiomSet uni;
 
-	axiomSet::iterator end = lhs.end();
-	for (axiomSet::iterator it = lhs.begin(); it != end; ++it) {
-		uni.insert(*it);
+	for (axiom a : lhs) {
+		uni.insert(a);
 	}
 
-	end = rhs.end();
-	for (axiomSet::iterator it = rhs.begin(); it != end; ++it) {
-		uni.insert(*it);
+	for (axiom a : rhs) {
+		uni.insert(a);
 	}
 
 	return uni;
@@ -48,17 +43,15 @@ axiomSet operator* (const axiomSet& lhs, const axiomSet& rhs) {
 axiomSet operator/ (const axiomSet& lhs, const axiomSet& rhs) {
 	axiomSet cut;
 
-	axiomSet::iterator end = lhs.end();
-	for (axiomSet::iterator it = lhs.begin(); it != end; ++it) {
-		if (rhs.find(*it)!=rhs.end())
-			cut.insert(*it);
+	for (axiom l : lhs) {
+		if (rhs.find(l)!=rhs.end())
+			cut.insert(l);
 	}
 	return cut;
 }
 ostream& operator << (ostream& os, const axiomSet& rhs) {
-	axiomSet::iterator end = rhs.end();
-	for (axiomSet::iterator it = rhs.begin(); it != end; ++it) {
-		switch (*it) {
+	for (axiom a : rhs) {
+		switch (a) {
 		case gt:
 			os << "gt ";
 			break;

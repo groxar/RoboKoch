@@ -3,12 +3,15 @@
 TimeFrame::TimeFrame() {
 }
 
+TimeFrame::TimeFrame(intervalRelMap irm) : irm(irm) {
+}
+
 TimeFrame::~TimeFrame() {
 }
 
 void TimeFrame::addRelation(const Interval& lhs,const Interval& rhs,const axiomSet& rel) {
 	if (this->getRelation(lhs,rhs).size()==0) {
-		intervalRelList.insert(make_pair(make_pair(lhs,rhs),rel));
+		irm.insert(make_pair(make_pair(lhs,rhs),rel));
 	} else {
 		//throw
 		cout<< "the intervals already have a relation"<<endl;
@@ -16,14 +19,14 @@ void TimeFrame::addRelation(const Interval& lhs,const Interval& rhs,const axiomS
 }
 
 void TimeFrame::print() {
-	for (auto pr : intervalRelList) {
+	for (auto pr : irm) {
 		cout << pr.first.first.getId() << " -> " << pr.first.second.getId()<<": "<< pr.second << endl;
 	}
 }
 
 set<Interval> TimeFrame::getNeighbours(const Interval& target) const {
 	set<Interval> result;
-	for (auto pr : intervalRelList) {
+	for (auto pr : irm) {
 		if (pr.first.first == target)
 			result.insert(pr.first.second);
 		else if (pr.first.second == target)
@@ -41,7 +44,7 @@ TimeFrame TimeFrame::getCTimeFrame() {
 	TimeFrame result;
 	axiomSet consistentRel;
 
-	for (auto intervalRel : this->intervalRelList) {
+	for (auto intervalRel : this->irm) {
 		consistentRel = this->getCRelation(intervalRel.first.first,intervalRel.first.second);
 		if (consistentRel.size()==0) {
 			cout << "throw inconsistency found"<< endl;
@@ -50,7 +53,7 @@ TimeFrame TimeFrame::getCTimeFrame() {
 		result.addRelation(intervalRel.first.first,intervalRel.first.second,consistentRel);
 	}
 	if ((*this) == result)
-		return result;
+		return result;//no change was detected -> final result
 
 	return result.getCTimeFrame();
 }
@@ -81,7 +84,7 @@ axiomSet TimeFrame::getCRelation(const Interval& a, const Interval&b) const {
 }
 
 axiomSet TimeFrame::getRelation(const Interval& a, const Interval&b) const {
-	for (auto pr : intervalRelList) {
+	for (auto pr : irm) {
 		if (pr.first.first == a && pr.first.second == b)
 			return pr.second;
 		else if (pr.first.first == b && pr.first.second == a)
@@ -94,12 +97,10 @@ vector<vector<Interval>> TimeFrame::getRoutes(const Interval& start, const Inter
 	return getInvRoutes(target,start,set<int>());
 }
 
-
 vector<vector<Interval>> TimeFrame::getInvRoutes(const Interval& current, const Interval& target, set<int> closed) const {
 	vector<future<vector<vector<Interval>>>> futureRoutes;
 	vector<vector<Interval>> result;
 	vector<Interval> route;
-	set<Interval> n = this->getNeighbours(current);
 	closed.insert(current.getId());
 
 	if (current == target) {
@@ -108,6 +109,7 @@ vector<vector<Interval>> TimeFrame::getInvRoutes(const Interval& current, const 
 		return result;
 	}
 
+	set<Interval> n = this->getNeighbours(current);
 	for (const Interval p : n) {
 		if (closed.find(p.getId()) == closed.end())
 			futureRoutes.push_back(std::async(&TimeFrame::getInvRoutes,this,p,target,set<int>(closed)));
@@ -130,12 +132,42 @@ vector<vector<Interval>> TimeFrame::getInvRoutes(const Interval& current, const 
 	return result;
 }
 
+set<Interval> TimeFrame::getIntervals() const {
+	set<Interval> result;
+	
+	for(auto intervalRel: irm) {
+		result.insert(intervalRel.first.first);
+		result.insert(intervalRel.first.second);
+	}
+	return result;
+}
+
+bool isConsitent() {	
+}
+
+bool TimeFrame::splitOnRel(map<Interval,Pair<Point*,offset>>,axiom) const {
+}
+
+vector<intervalRelMap> TimeFrame::splitOnRel(intervalRelMap::const_iterator it) const {
+	vector<intervalRelMap> result;
+	vector<intervalRelMap> temp;
+	auto entry = *it;
+
+	it++;
+	temp = splitOnRel(it);
+	
+	for(auto )
+	
+	return temp;	
+}
+
+
 bool TimeFrame::operator== (const TimeFrame& rhs) {
-	if ((this->intervalRelList.size() != rhs.intervalRelList.size()))
+	if ((this->irm.size() != rhs.irm.size()))
 		return false;
 
 	axiomSet temp;
-	for (auto intervalRel: intervalRelList) {
+	for (auto intervalRel: irm) {
 		temp = rhs.getRelation(intervalRel.first.first,intervalRel.first.second);
 		if (!((axiomSet)intervalRel.second == temp))
 			return false;

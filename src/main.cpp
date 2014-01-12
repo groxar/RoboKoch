@@ -8,9 +8,9 @@ using namespace std;
 
 
 int main() {
-	Interval a;
-	Interval b;
-	Interval c;
+	Interval a(10);
+	Interval b(20);
+	Interval c(21);
 	Interval e;
 	Interval loneInterval;
 	Interval z;
@@ -18,32 +18,33 @@ int main() {
 	axiomSet ac({f,fi});
 	axiomSet bc({di,d});
 	axiomSet be({oi});
-	axiomSet ec({s,si});
-	axiomSet ea({s,si});
-	axiomSet a_loneInterval({s,si});
-	axiomSet emptyRel;
-	axiomSet pr({oi,eq});
+axiomSet ec({s,si});
+axiomSet ea({s,si});
+axiomSet a_loneInterval({s,si});
+axiomSet emptyRel;
+axiomSet pr({oi,eq});
 
-	//interval test
-	cout <<"a == b "<< (a == b) << endl;
-	cout <<"a == a "<< (a == a) << endl;
+//interval test
+cout <<"a == b "<< (a == b) << endl;
+cout <<"a == a "<< (a == a) << endl;
 
-	//axiomSet test
-	cout <<"axiomSet({}).size() "<< axiomSet({}).size()<< endl;
-	cout <<"eq axiomSet "<< (axiomSet({di,si}) == axiomSet({di,si})) << endl;
-	cout <<"!eq axiomSet "<< (axiomSet({di,s}) == axiomSet({di,si})) << endl;
-	cout <<"!eq axiomSet "<< (axiomSet({di,si,fi}) == axiomSet({di,si})) << endl;
+//axiomSet test
+cout <<"axiomSet({}).size() "<< axiomSet({}).size()<< endl;
+cout <<"eq axiomSet "<< (axiomSet({di,si}) == axiomSet({di,si})) << endl;
+cout <<"!eq axiomSet "<< (axiomSet({di,s}) == axiomSet({di,si})) << endl;
+cout <<"!eq axiomSet "<< (axiomSet({di,si,fi}) == axiomSet({di,si})) << endl;
 
-	//relation test
-	cout <<"Id: "<<  a.getId()<< " Duration: "<< a.getDuration() << endl;
-	cout <<"Id: "<<  b.getId()<< " Duration: "<< b.getDuration() << endl;
-	cout <<"pr: "<<  pr << endl;
-	cout <<"!pr: "<< !pr << endl;
-	cout <<"pr * !pr: "<< pr * !pr << endl;
-	cout <<"pr / !pr: "<< pr / !pr << endl;
-	cout <<"P(pr,pr): "<< P(pr,pr) << endl;
-	cout <<"P(pr,!pr): "<< P(pr,!pr) << endl;
+//relation test
+cout <<"Id: "<<  a.getId()<< " Duration: "<< a.getDuration() << endl;
+cout <<"Id: "<<  b.getId()<< " Duration: "<< b.getDuration() << endl;
+cout <<"pr: "<<  pr << endl;
+cout <<"!pr: "<< !pr << endl;
+cout <<"pr * !pr: "<< pr * !pr << endl;
+cout <<"pr / !pr: "<< pr / !pr << endl;
+cout <<"P(pr,pr): "<< P(pr,pr) << endl;
+cout <<"P(pr,!pr): "<< P(pr,!pr) << endl;
 	cout <<"P({d},{si}): "<< P( axiomSet({d}),axiomSet({si})) << endl;
+	cout <<"P({fi},{gt},{s}): "<< P(P( axiomSet({fi}),axiomSet({gt})), axiomSet({s})) << endl;
 	cout <<"empty relation size     " << emptyRel.size()<<endl;
 
 	//timeframe test
@@ -58,6 +59,11 @@ int main() {
 	tf.addRelation(e,a,ea);
 	tf.addRelation(a,loneInterval,a_loneInterval);
 	tf.print();
+	cout <<"all relations" << endl;
+	for(Interval interval : tf.getIntervals()) {
+		cout << interval.getId()<< " ";
+	}
+	cout << endl;
 	cout <<"relation b e: " << tf.getRelation(b,e)<< endl;
 	cout <<"relation e b: " << tf.getRelation(e,b)<< endl;
 	cout <<"relation e z: " << tf.getRelation(e,z)<< endl;
@@ -66,9 +72,10 @@ int main() {
 	cout << endl;
 	//consistent timeframe test
 	TimeFrame ctf;
-	ctf.addRelation(a,b,ab);
-	ctf.addRelation(a,c,ac);
-	ctf.addRelation(b,e,be);
+	ctf.addRelation(a,c,axiomSet({s}));
+	ctf.addRelation(b,c,axiomSet({f}));
+	ctf.addRelation(a,b,axiomSet({st}));
+	//impossible Relation
 	ctf.print();
 	cout << "relation a e: " << ctf.getRelation(a,e)<< endl;
 	cout << "Crelation a e: "<< ctf.getCRelation(a,e)<< endl;
@@ -94,6 +101,13 @@ int main() {
 	//route finder
 	cout << "Route test" << endl;
 	vector<vector<Interval>> vvp = tf.getRoutes(a,e);
+	for (auto route : vvp) {
+		for (Interval p : route)
+			cout << p.getId() << " ";
+		cout << endl;
+	}
+	cout << "Route test to the same point" << endl;
+	vvp = tf.getRoutes(a,a);
 	for (auto route : vvp) {
 		for (Interval p : route)
 			cout << p.getId() << " ";

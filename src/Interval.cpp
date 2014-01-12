@@ -1,6 +1,6 @@
 #include "Interval.hpp"
 
-Interval::Interval(unsigned int duration): duration(duration) {
+Interval::Interval(int duration): duration(duration) {
 	static unsigned int idCounter = 0;
 	id = idCounter;
 	idCounter++;
@@ -16,14 +16,14 @@ unsigned int Interval::getId() const {
 	return id;
 }
 
-unsigned int Interval::getDuration() const {
+int Interval::getDuration() const {
 	return duration;
 }
 
 //only needed for sets of Intervals
-bool Interval::operator <(const Interval& rhs) const {
+bool Interval::operator< (const Interval& rhs) const {
 	return this->id < rhs.id;
 }
-bool Interval::operator==(const Interval& rhs) const {
+bool Interval::operator== (const Interval& rhs) const {
 	return this->id == rhs.id;
 }
