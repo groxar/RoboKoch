@@ -3,6 +3,7 @@
 #include "axiomSet.hpp"
 #include "Interval.hpp"
 #include "TimeDomain.hpp"
+#include "intervalRelMap.hpp"
 #include <map>
 #include <utility>
 #include <iostream>//REMOVE BY FINISH UP
@@ -11,14 +12,6 @@
 #include <vector>
 
 using namespace std;
-
-struct intervalPair_compare {
-	bool operator() (const pair<Interval,Interval> lhs, const pair<Interval,Interval> rhs) const {
-		return lhs.first.getId() < rhs.first.getId();
-	}
-};
-
-typedef multimap<pair<Interval,Interval>,axiomSet,intervalPair_compare> intervalRelMap;
 
 class TimeFrame {
   public:
@@ -42,6 +35,7 @@ class TimeFrame {
 
   private:
 	intervalRelMap irm;
+	vector<TimeDomain> tdv;
 
 	vector<vector<Interval>> getInvRoutes(const Interval& start, const Interval& target, set<int> closed) const;
 };

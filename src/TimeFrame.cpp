@@ -134,33 +134,16 @@ vector<vector<Interval>> TimeFrame::getInvRoutes(const Interval& current, const 
 
 set<Interval> TimeFrame::getIntervals() const {
 	set<Interval> result;
-	
-	for(auto intervalRel: irm) {
+
+	for (auto intervalRel: irm) {
 		result.insert(intervalRel.first.first);
 		result.insert(intervalRel.first.second);
 	}
 	return result;
 }
 
-bool isConsitent() {	
+bool isConsitent() {
 }
-
-bool TimeFrame::splitOnRel(map<Interval,Pair<Point*,offset>>,axiom) const {
-}
-
-vector<intervalRelMap> TimeFrame::splitOnRel(intervalRelMap::const_iterator it) const {
-	vector<intervalRelMap> result;
-	vector<intervalRelMap> temp;
-	auto entry = *it;
-
-	it++;
-	temp = splitOnRel(it);
-	
-	for(auto )
-	
-	return temp;	
-}
-
 
 bool TimeFrame::operator== (const TimeFrame& rhs) {
 	if ((this->irm.size() != rhs.irm.size()))

@@ -3,12 +3,12 @@ CXX = g++
 OBJDIR = obj/
 OPTION = -W -Wall -Wextra -g
 
-phony: test
+phony: rk
 
-RoboKoch: main.cpp Point.cpp PointRelation.cpp
-	$(CXX) -std=c++0x -lpthread -o $@ $+
+rk: main.cpp Point.cpp Interval.cpp axiomSet.cpp TimeDomain.cpp TimeFrame.cpp
+	$(CXX) $(OPTION) -std=c++0x -lpthread -pthread -o $@ $+
 
-test: main.cpp Point.cpp Interval.cpp axiomSet.cpp TimeFrame.cpp
+test: testMain.cpp Point.cpp Interval.cpp axiomSet.cpp TimeDomain.cpp TimeFrame.cpp
 	$(CXX) $(OPTION) -std=c++0x -lpthread -pthread -o $@ $+
 	
 format: 
