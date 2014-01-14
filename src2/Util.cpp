@@ -47,11 +47,11 @@ map<Interval,map<Interval,axiomSet>> getRelation(const string& timeFilePath, con
 	return result;
 }
 
-map<Interval,Range> getTimeWindow(const string& relationFilePath, const set<Interval>& intervalSet){
+map<Interval,pair<Range,Range>> getTimeWindow(const string& relationFilePath, const set<Interval>& intervalSet){
 
 	ifstream relationFile(relationFilePath); 
 	map<Interval,pair<int,int>> temp;
-	map<Interval,Range> result;
+	map<Interval,pair<Range,Range>> result;
 	CSVReader csvRow;
 	Interval interval(-1);
 	string relation;
@@ -84,7 +84,9 @@ map<Interval,Range> getTimeWindow(const string& relationFilePath, const set<Inte
 	}
 	for(auto ipp : temp)
 	{
-		result[ipp.first] = Range(ipp.second.first,ipp.second.second);
+		result[ipp.first] = make_pair(Range(ipp.second.first,ipp.second.second),
+				Range(ipp.second.first + ipp.first.getDuration(),
+				ipp.second.second + ipp.first.getDuration()));
 	}
 
 	return result;

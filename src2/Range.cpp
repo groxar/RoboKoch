@@ -31,6 +31,27 @@ bool Range::defineMax(int value) {
 	
 }
 
+Range Range::operator/ (const Range& rhs){
+	return this->max >= rhs.min? Range(rhs.min, this->max) : Range(-1);
+}
+
+Range Range::operator* (const Range& rhs){
+	return this->max >= rhs.min? Range(this->min, rhs.max): Range(-1);
+}
+
+bool Range::operator< (const Range& rhs){
+	return this->max < rhs.min;
+}
+
+bool Range::operator> (const Range& rhs){
+	return this->min > rhs.max;
+}
+
+bool Range::operator== (const Range& rhs){
+	return this->min == rhs.min && this->max == rhs.max;
+}
+
+
 int Range::getMin() {
 	return min;
 }

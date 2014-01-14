@@ -7,7 +7,7 @@ using namespace ::std;
 
 class Interval {
   public:
-	Interval(int id, int duration = 0);
+	Interval(int id , int duration = 0);
 	Interval(const Interval& interval);
 	~Interval();
 	int getId() const;

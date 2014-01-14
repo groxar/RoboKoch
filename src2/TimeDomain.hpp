@@ -10,12 +10,13 @@
 
 class TimeDomain {
 public:
-	TimeDomain(map<Interval,map<Interval,axiomSet>> intervalRelationMap, map<Interval,Range> intervalRangeMap);
+	TimeDomain(map<Interval,map<Interval,axiomSet>> intervalRelationMap, map<Interval,pair<Range,Range>> intervalRangeMap);
 	TimeDomain(const TimeDomain& td);
 	~TimeDomain();
-	bool areIntervalsInBounds();
+	bool areIntervalsInRange();
+	bool testRules();
 
 private:
 	map<Interval,map<Interval,axiomSet>> irm;
-	map<Interval,Range> iRangeMap;
+	map<Interval,pair<Range,Range>> iram;
 };
