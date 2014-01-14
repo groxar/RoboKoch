@@ -3,7 +3,6 @@
 #include "axiomSet.hpp"
 #include "Interval.hpp"
 #include "TimeDomain.hpp"
-#include "intervalRelMap.hpp"
 #include <map>
 #include <utility>
 #include <iostream>//REMOVE BY FINISH UP
@@ -16,9 +15,8 @@ using namespace std;
 class TimeFrame {
   public:
 	TimeFrame();
-	TimeFrame(intervalRelMap irm);
+	TimeFrame(map<Interval,map<Interval,axiomSet>> irm);
 	~TimeFrame();
-	void addRelation(const Interval& lhs, const Interval& rhs, const axiomSet& rel);
 	bool isConsistent();
 	bool isConsistent(const Interval& a, const Interval& b) const;
 	TimeFrame getCTimeFrame();
@@ -34,8 +32,8 @@ class TimeFrame {
 	vector<intervalRelMap> splitOnRel() const;
 
   private:
-	intervalRelMap irm;
-	vector<TimeDomain> tdv;
+	set<Intervals> intervalSet;
+	map<Interval,map<Interval,axiomSet>> irm;
 
 	vector<vector<Interval>> getInvRoutes(const Interval& start, const Interval& target, set<int> closed) const;
 };

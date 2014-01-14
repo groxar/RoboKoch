@@ -1,19 +1,21 @@
 #pragma once
 #include "Interval.hpp"
 #include "axiomSet.hpp"
-#include "Point.hpp"
+#include "Range.hpp"
 #include <map>
 #include <set>
 
-typedef map<Interval,Point> intervalPOMap; // Interval Pair<PointId,offset>
+#include <iostream>
+
 
 class TimeDomain {
 public:
-	TimeDomain(map<Interval,Point> intervalPointMap);
+	TimeDomain(map<Interval,map<Interval,axiomSet>> intervalRelationMap, map<Interval,Range> intervalRangeMap);
 	TimeDomain(const TimeDomain& td);
 	~TimeDomain();
-	bool addPoint(const Interval& newInterval, const Interval& reference, const axiom ax);
+	bool areIntervalsInBounds();
 
 private:
-	intervalPOMap ipm;
+	map<Interval,map<Interval,axiomSet>> irm;
+	map<Interval,Range> iRangeMap;
 };

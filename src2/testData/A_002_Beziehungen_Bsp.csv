@@ -9,7 +9,7 @@ Arbeitsschritt 1;Arbeitsschritt 2;Beziehung
 9;8;nach
 10;14;vor
 11;12;direkt vor (ohne Pause)
-11;14;vor, angrenzend oder überlappend
+11;14;vor, angrenzend oder ueberlappend
 12;13;direkt vor (ohne Pause)
 14;9;nach
 14;12;vor

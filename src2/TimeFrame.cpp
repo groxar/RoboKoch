@@ -9,28 +9,18 @@ TimeFrame::TimeFrame(intervalRelMap irm) : irm(irm) {
 TimeFrame::~TimeFrame() {
 }
 
-void TimeFrame::addRelation(const Interval& lhs,const Interval& rhs,const axiomSet& rel) {
-	if (this->getRelation(lhs,rhs).size()==0) {
-		irm.insert(make_pair(make_pair(lhs,rhs),rel));
-	} else {
-		//throw
-		cout<< "the intervals already have a relation"<<endl;
-	}
-}
-
 void TimeFrame::print() {
-	for (auto pr : irm) {
-		cout << pr.first.first.getId() << " -> " << pr.first.second.getId()<<": "<< pr.second << endl;
+	for (auto x : irm) {
+		for(auto y : x.second)
+			cout << x.first.getId() << "->" << y.first.getID() << " : " << y.second();
 	}
 }
 
 set<Interval> TimeFrame::getNeighbours(const Interval& target) const {
 	set<Interval> result;
-	for (auto pr : irm) {
-		if (pr.first.first == target)
-			result.insert(pr.first.second);
-		else if (pr.first.second == target)
-			result.insert(pr.first.first);
+	for (auto x : irm) {
+		if (x.first == target)
+			result.insert(x.second.first.begin(),x.second.first.end());// does it WÖRK?
 	}
 	return result;
 }
@@ -133,16 +123,11 @@ vector<vector<Interval>> TimeFrame::getInvRoutes(const Interval& current, const 
 }
 
 set<Interval> TimeFrame::getIntervals() const {
-	set<Interval> result;
-
-	for (auto intervalRel: irm) {
-		result.insert(intervalRel.first.first);
-		result.insert(intervalRel.first.second);
-	}
-	return result;
+	return intervalSet;
 }
 
 bool isConsitent() {
+	return false;
 }
 
 bool TimeFrame::operator== (const TimeFrame& rhs) {
