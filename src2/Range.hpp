@@ -1,5 +1,9 @@
 #pragma once
 
+#include <iostream>
+
+using namespace std;
+
 class Range {
   public:
 	Range();
@@ -12,10 +16,13 @@ class Range {
 	bool operator< (const Range& rhs);
 	bool operator> (const Range& rhs);
 	bool operator== (const Range& rhs);
-	int getMin();
-	int getMax();
+	Range operator+ (int value);
+	Range operator- (int value);
+	int getMin() const;
+	int getMax() const;
 
   private:
 	int min;
 	int max;
 };
+ostream& operator << (ostream& os, const Range& rhs);

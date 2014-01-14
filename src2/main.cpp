@@ -2,6 +2,7 @@
 #include "axiomSet.hpp"
 #include "Util.hpp"
 #include "TimeDomain.hpp"
+#include "Range.hpp"
 
 #include <iostream>
 #include <vector>
@@ -22,6 +23,12 @@ int main() {
 	TimeDomain td(iia,itime);
 	cout << td.areIntervalsInRange() << endl;
 	cout << td.testRules() << endl;
+	
+	//Range test
+	cout << Range(0,10)/ Range(5,15) << endl;
+	cout << Range(0,10)/ Range(10,15) << endl;
+	cout << Range(0,10)/ Range(11,15) << endl;
+	cout << Range(5,15)/ Range(0,10) << endl;
 
 	
 
