@@ -15,7 +15,7 @@ using namespace std;
 int main() {
 	set<Interval> im = getIntervals("testData/A_002_Ablauf_Bsp.csv");
 	map<Interval,map<Interval,axiomSet>> iia = getRelation("testData/A_002_Beziehungen_Bsp.csv",im);
-	map<Interval,Range> itime = getTimeWindow("testData/A_002_DurchfuerungAC.csv",im);
+	map<Interval,Range> itime = getTimeWindow("testData/A_002_DurchfuerungCC.csv",im);
 	/* for(auto i :itime)
 	{
 		cout << i.first.getId() <<" " << i.second.getMin()/60 <<":"<<i.second.getMin()%60 << " "<< i.second.getMax()/60 <<":"<<i.second.getMax()%60 << endl;
