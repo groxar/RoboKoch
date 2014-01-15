@@ -15,6 +15,7 @@ using namespace std;
 
 set<Interval> getIntervals(const string& intervalFilePath);
 map<Interval,map<Interval,axiomSet>> getRelation(const string& relationFilePath, const set<Interval>& intervalSet);
-map<Interval,pair<Range,Range>> getTimeWindow(const string& relationFilePath, const set<Interval>& intervalSet);
+map<Interval,Range> getTimeWindow(const string& relationFilePath, const set<Interval>& intervalSet);
 axiomSet stringToAxiomSet(string relation);
 int stringToTime(string time);
+void printIRAM(map<Interval,Range> iram);

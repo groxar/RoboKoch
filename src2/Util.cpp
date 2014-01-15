@@ -38,7 +38,7 @@ map<Interval,map<Interval,axiomSet>> getRelation(const string& timeFilePath, con
 			secondInterval = *intervalSet.find(Interval(stoi(csvRow[1])));
 			relation = csvRow[2];
 			result[firstInterval][secondInterval] = stringToAxiomSet(relation);
-			result[secondInterval][firstInterval] = !stringToAxiomSet(relation); //insert inverse
+			//result[secondInterval][firstInterval] = !stringToAxiomSet(relation); //insert inverse
 		} 
 		catch(const invalid_argument& ex) {
 		//	cout << "invalid Line "<< csvRow[0] << " " << csvRow[1] << " " << csvRow[2] << endl;
@@ -47,16 +47,15 @@ map<Interval,map<Interval,axiomSet>> getRelation(const string& timeFilePath, con
 	return result;
 }
 
-map<Interval,pair<Range,Range>> getTimeWindow(const string& relationFilePath, const set<Interval>& intervalSet){
+map<Interval,Range> getTimeWindow(const string& relationFilePath, const set<Interval>& intervalSet){
 
 	ifstream relationFile(relationFilePath); 
 	map<Interval,pair<int,int>> temp;
-	map<Interval,pair<Range,Range>> result;
+	map<Interval,Range> result;
 	CSVReader csvRow;
 	Interval interval(-1);
 	string relation;
 	int time = 0;
-	int prevTime = 0;
 	unsigned int dayCounter =0;
 
 	while(relationFile >> csvRow)
@@ -65,10 +64,10 @@ map<Interval,pair<Range,Range>> getTimeWindow(const string& relationFilePath, co
 			interval = *intervalSet.find(Interval(stoi(csvRow[0])));
 			relation = csvRow[1];
 
-			prevTime = time;
 			time = stringToTime(csvRow[2]) + (dayCounter * 24 * 60);
-			if(prevTime > time)
+			if(csvRow[4].find("Folgetag")!= std::string::npos)
 			{
+				cout << "increased day counter"<< endl<< endl;
 				dayCounter++;
 				time += dayCounter * 24 * 60;
 			}
@@ -84,9 +83,7 @@ map<Interval,pair<Range,Range>> getTimeWindow(const string& relationFilePath, co
 	}
 	for(auto ipp : temp)
 	{
-		result[ipp.first] = make_pair(Range(ipp.second.first,ipp.second.second),
-				Range(ipp.second.first + ipp.first.getDuration(),
-				ipp.second.second + ipp.first.getDuration()));
+		result[ipp.first] = Range(ipp.second.first,ipp.second.second - ipp.first.getDuration());
 	}
 
 	return result;
@@ -115,8 +112,8 @@ int stringToTime(string time){
 
 axiomSet stringToAxiomSet(string relation) {
 	vector<string> relationVector; 
-	vector<string> tokenVector({"direkt vor","direkt anschliessend","vor","nach","angrenzend","ueberlappend"});
-	vector<axiomSet> axiomVector({axiomSet({m}),axiomSet({mi}),axiomSet({st}),axiomSet({gt}),axiomSet({m,mi}),axiomSet({o,oi})});
+	vector<string> tokenVector({"direkt vor","direkt anschliessend","vor","nach","angrenzend","ueberlappend","gleich","beendet","startet"});
+	vector<axiomSet> axiomVector({axiomSet({m}),axiomSet({mi}),axiomSet({st}),axiomSet({gt}),axiomSet({m,mi}),axiomSet({o,oi}),axiomSet({eq}),axiomSet({f}),axiomSet({s})});
 	axiomSet result;
 	size_t pos;
 
@@ -127,4 +124,11 @@ axiomSet stringToAxiomSet(string relation) {
 		}
 	}
 	return result;
+}
+
+
+void printIRAM(map<Interval,Range> iram) {
+	for(auto ira: iram){
+		cout << ira.first.getId() <<" " << ira.second.getMin() << " "<< ira.first.getDuration() << "-> +" << ira.second.size() << endl;;
+	}
 }
