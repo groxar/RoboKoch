@@ -1,0 +1,16 @@
+Arbeitsschritt 1;Arbeitsschritt 2;Beziehung
+1;2;vor
+2;3;direkt vor (ohne Pause)
+4;3;nach
+4;5;nach
+4;6;vor
+6;7;vor
+7;8;vor
+9;8;nach
+10;14;vor
+11;12;direkt vor (ohne Pause)
+11;14;vor, angrenzend oder ueberlappend
+12;13;direkt vor (ohne Pause)
+14;9;nach
+14;12;vor
+15;9;direkt vor (ohne Pause)
