@@ -9,13 +9,13 @@ TimeFrame::TimeFrame(map<Interval,map<Interval,axiomSet>> intervalRelationMap, s
 TimeFrame::~TimeFrame() {
 }
 
-void TimeFrame::addRelation(const Interval& x, const Interval& y, const axiomSet& ax){
+void TimeFrame::addRelation(const Interval& x, const Interval& y, const axiomSet& ax) {
 	irm[x][y] = ax;
 }
 
 void TimeFrame::print() {
 	for (auto x : irm) {
-		for(auto y : x.second)
+		for (auto y : x.second)
 			cout << x.first.getId() << "->" << y.first.getId() << " : " << y.second<< endl;
 	}
 }
@@ -26,7 +26,7 @@ set<Interval> TimeFrame::getNeighbours(const Interval& target) const {
 	Interval y(-1);
 	for (auto xm : irm) {
 		x = xm.first;
-		for(auto ym : xm.second){
+		for (auto ym : xm.second) {
 			y = ym.first;
 
 			if (x == target)
@@ -45,7 +45,7 @@ bool TimeFrame::isConsistent() const {
 	Interval y(-1);
 	for (auto xm : irm) {
 		x = xm.first;
-		for(auto ym : xm.second){
+		for (auto ym : xm.second) {
 			y = ym.first;
 
 			if (getCRelation(x,y)==axiomSet({})) // inkonsistent Relation found
@@ -57,19 +57,19 @@ bool TimeFrame::isConsistent() const {
 	return true;
 }
 
-TimeFrame TimeFrame::getCTimeFrame() const{
+TimeFrame TimeFrame::getCTimeFrame() const {
 	TimeFrame result;
 	axiomSet consistentRel;
 	Interval x(-1);
 	Interval y(-1);
 	for (auto xm : irm) {
 		x = xm.first;
-		for(auto ym : xm.second){
+		for (auto ym : xm.second) {
 			y = ym.first;
 
 			consistentRel = this->getCRelation(x,y);
 			if (consistentRel.size()==0) {
-				cout << x.getId() << " " << y.getId() << endl; 
+				cout << x.getId() << " " << y.getId() << endl;
 				cout << "throw inconsistency found"<< endl;
 				return TimeFrame();
 			}
@@ -86,7 +86,7 @@ axiomSet TimeFrame::getCRelation(const Interval& a, const Interval&b) const {
 	Interval crntPos(-1);
 	axiomSet temp;
 	axiomSet result(axiomSet({eq,st,gt,d,di,o,oi,s,si,f,fi,m,mi}));
-	
+
 	auto routes = getRoutes(a,b);
 	if (routes.size() == 0) {
 		return temp;//empty Relationset
@@ -112,7 +112,7 @@ axiomSet TimeFrame::getRelation(const Interval& a, const Interval&b) const {
 	Interval y(-1);
 	for (auto xm : irm) {
 		x = xm.first;
-		for(auto ym : xm.second){
+		for (auto ym : xm.second) {
 			y = ym.first;
 
 			if (x == a && y == b)
@@ -167,19 +167,19 @@ set<Interval> TimeFrame::getIntervals() const {
 	return im;
 }
 
-bool TimeFrame::operator== (const TimeFrame& rhs) const{
+bool TimeFrame::operator== (const TimeFrame& rhs) const {
 	if ((this->irm.size() != rhs.irm.size()))
 		return false;
 	Interval x(-1);
 	Interval y(-1);
 	for (auto xm : irm) {
 		x = xm.first;
-		if(xm.second.size() != (*rhs.irm.find(x)).second.size())
+		if (xm.second.size() != (*rhs.irm.find(x)).second.size())
 			return false;
-		for(auto ym : xm.second){
+		for (auto ym : xm.second) {
 			y = ym.first;
 
-			if(!(this->getRelation(x,y) == rhs.getRelation(x,y)))
+			if (!(this->getRelation(x,y) == rhs.getRelation(x,y)))
 				return false;
 		}
 	}

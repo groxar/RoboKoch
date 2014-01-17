@@ -22,3 +22,6 @@ b:
 
 c:
 	./test testData/A_002_Ablauf_Bsp.csv testData/A_002_Beziehungen_Bsp.csv testData/A_002_DurchfuerungCC.csv
+
+d:
+	./test testData/A_002_Ablauf_Bsp.csv testData/A_002_Beziehungen_CBsp.csv testData/A_002_DurchfuerungCC.csv

@@ -58,7 +58,7 @@ ostream& operator << (ostream& os, const axiomSet& rhs) {
 }
 
 ostream& operator << (ostream& os, const axiom rhs) {
-	switch (rhs){
+	switch (rhs) {
 	case gt:
 		os << "gt";
 		break;

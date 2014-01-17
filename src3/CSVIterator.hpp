@@ -9,17 +9,16 @@
 
 using namespace std;
 
-class CSVReader
-{
-    public:
-        string operator[](size_t index) const;
-        size_t size() const;
-        void readNextLine(istream& istr);
-    private:
-        vector<string> lineVector;
+class CSVReader {
+  public:
+	string operator[](size_t index) const;
+	size_t size() const;
+	void readNextLine(istream& istr);
+  private:
+	vector<string> lineVector;
 };
 
-istream& operator>>(istream& istr,CSVReader& reader);  
+istream& operator>>(istream& istr,CSVReader& reader);
 /*
 int main()
 {

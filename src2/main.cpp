@@ -50,8 +50,14 @@ int main(int argc, char** argv) {
 	}
 	cout << "Die Beziehungen sind konsitent"<< endl;
 
+	cout << axiomSet({di,d,m}) << endl;
+	vector<axiom> axv = tf.splitAxiom(axiomSet({o,s,fi}));
+	for(axiom ax: axv)
+	{
+		cout << ax << " ";
+	}
 
-/* 
+ 
 	tf.print();
 	cout << tf.getRelation(Interval(2),Interval(3)) << endl;
 	cout << tf.getRelation(Interval(3),Interval(2)) << endl;
@@ -79,9 +85,9 @@ int main(int argc, char** argv) {
 	 for(auto i :itime)
 	{
 		cout << i.first.getId() <<" " << i.second.getMin()/60 <<":"<<i.second.getMin()%60 << " "<< i.second.getMax()/60 <<":"<<i.second.getMax()%60 << endl;
-	}*/
+	}
 	
-	/*TimeDomain td(irm,itime);
+	TimeDomain td(irm,itime);
 	cout << "Intervals in Range: " << td.areIntervalsInRange() << endl;
 	cout << "Ranges valid: " << td.areRangesValid() << endl;
 	cout << td.testRules() << endl;
@@ -100,6 +106,5 @@ int main(int argc, char** argv) {
 	printIRAM(td.filterImpossibleRanges());
 	
 
-*/
 	return EXIT_SUCCESS;
 }

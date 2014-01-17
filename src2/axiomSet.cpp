@@ -49,49 +49,57 @@ axiomSet operator/ (const axiomSet& lhs, const axiomSet& rhs) {
 	}
 	return cut;
 }
+
 ostream& operator << (ostream& os, const axiomSet& rhs) {
 	for (axiom a : rhs) {
-		switch (a) {
-		case gt:
-			os << "gt ";
-			break;
-		case st:
-			os << "st ";
-			break;
-		case eq:
-			os << "eq ";
-			break;
-		case m:
-			os << "m " ;
-			break;
-		case mi:
-			os << "mi ";
-			break;
-		case o:
-			os << "o " ;
-			break;
-		case oi:
-			os << "oi ";
-			break;
-		case d:
-			os << "d " ;
-			break;
-		case di:
-			os << "di ";
-			break;
-		case s:
-			os << "s " ;
-			break;
-		case si:
-			os << "si ";
-			break;
-		case f:
-			os << "f " ;
-			break;
-		case fi:
-			os << "fi ";
-			break;
-		}
+		os << a << " ";
 	}
 	return os;
 }
+
+ostream& operator << (ostream& os, const axiom rhs) {
+	switch (rhs){
+	case gt:
+		os << "gt";
+		break;
+	case st:
+		os << "st";
+		break;
+	case eq:
+		os << "eq";
+		break;
+	case m:
+		os << "m" ;
+		break;
+	case mi:
+		os << "mi";
+		break;
+	case o:
+		os << "o" ;
+		break;
+	case oi:
+		os << "oi";
+		break;
+	case d:
+		os << "d" ;
+		break;
+	case di:
+		os << "di";
+		break;
+	case s:
+		os << "s" ;
+		break;
+	case si:
+		os << "si";
+		break;
+	case f:
+		os << "f" ;
+		break;
+	case fi:
+		os << "fi";
+		break;
+	}
+	return os;
+}
+
+

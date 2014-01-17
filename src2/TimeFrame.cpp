@@ -185,3 +185,36 @@ bool TimeFrame::operator== (const TimeFrame& rhs) const{
 	}
 	return true;
 }
+
+
+vector<map<Interval,map<Interval,axiom>>> TimeFrame::splitRelation() const{
+	vector<map<Interval,map<Interval,axiom>>> result;
+
+	return result;
+}
+
+vector<map<Interval,axiom>> TimeFrame::splitInnerRelation(map<Interval,axiomSet> iaxsm) const{
+	vector<map<Interval,axiom>> result;
+	map<Interval,axiom> iaxmTemp;
+	vector<vector<axiom>> axvv;
+
+	for(auto iaxs: iaxsm){
+		axvv.push_back(splitAxiom(iaxs.second));
+	}
+
+	for(auto axv: axvv)
+	{
+		for(axiom ax: axv)
+		{
+			cout << ax << " ";
+		}
+		cout << endl;
+	}
+
+	return result;
+}
+
+vector<axiom> TimeFrame::splitAxiom(const axiomSet& axs) const{
+	vector<axiom> result(axs.begin(), axs.end());
+	return result;
+}

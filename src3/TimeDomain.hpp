@@ -9,7 +9,7 @@
 
 
 class TimeDomain {
-public:
+  public:
 	TimeDomain(map<Interval,map<Interval,axiomSet>> intervalRelationMap, map<Interval,Range> intervalRangeMap);
 	TimeDomain(const TimeDomain& td);
 	~TimeDomain();
@@ -17,10 +17,10 @@ public:
 	bool areRangesValid();
 	bool areRulesValid();
 	bool isConsistent();
-	
+
 	map<Interval,Range> filterImpossibleRanges();
 
-private:
+  private:
 	map<Interval,map<Interval,axiomSet>> irm;
 	map<Interval,Range> iram;
 

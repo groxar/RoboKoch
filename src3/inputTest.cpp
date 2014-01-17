@@ -14,6 +14,6 @@ int main() {
 	map<Interval,map<Interval,axiomSet>> iia = getRelation("testData/A_002_Beziehungen_Bsp.csv",im);
 	map<Interval,pair<int,int>> itime = getTimeWindow("testData/A_002_DurchfuerungAC.csv",im);
 	cout << U"üäöß"<< endl;
-	
+
 	return 0;
 }

@@ -15,7 +15,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-	if(argc != 4){
+	if (argc != 4) {
 		cout << "Dateipfade zu den foldenden Dateien werden benötigt: \nAblauf\nBeziehung\nDurchfuerung" << endl;
 		return EXIT_FAILURE;
 	}
@@ -24,15 +24,15 @@ int main(int argc, char** argv) {
 	ifstream relationFile(argv[2]);
 	ifstream timeFile(argv[3]);
 
-	if(!intervalFile.good()){
+	if (!intervalFile.good()) {
 		cout << "Der Dateipfad zu Interval ist ungültig" << endl;
 		return EXIT_FAILURE;
 	}
-	if(!relationFile.good()){
+	if (!relationFile.good()) {
 		cout << "Der Dateipfad zu Beziehung ist ungültig" << endl;
 		return EXIT_FAILURE;
 	}
-	if(!timeFile.good()){
+	if (!timeFile.good()) {
 		cout << "Der Dateipfad zu Durchfuerung ist ungültig" << endl;
 		return EXIT_FAILURE;
 	}
@@ -44,18 +44,18 @@ int main(int argc, char** argv) {
 
 	TimeFrame tf(irm, im);
 	TimeDomain td(irm,itime);
-	
-	if(!tf.isConsistent()){
+
+	if (!tf.isConsistent()) {
 		cout << "Die Beziehungen sind inkonsitent"<< endl;
 		return 1;
 	}
 	cout << "Die Beziehungen sind konsitent"<< endl;
 
-	if(!td.isConsistent()){
+	if (!td.isConsistent()) {
 		cout << "Die Durchfuerung ist inkonsistent" <<endl;
 		return 1;
 	}
 	cout << "Die Durchfuerung ist konsistent" <<endl;
 
 	return EXIT_SUCCESS;
-}	
+}

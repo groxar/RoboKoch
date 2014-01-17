@@ -20,6 +20,7 @@ axiomSet P(const axiomSet& lhs, const axiomSet& rhs);
 axiomSet operator* (const axiomSet& lhs, const axiomSet& rhs);
 axiomSet operator/ (const axiomSet& lhs, const axiomSet& rhs);
 ostream& operator<< (ostream& os, const axiomSet& rhs);
+ostream& operator<< (ostream& os, const axiom rhs);
 
 
 

@@ -12,7 +12,6 @@
 
 using namespace std;
 
-typedef map<Interval,map<Interval,axiomSet>> interRelMap;
 
 class TimeFrame {
   public:
@@ -30,12 +29,15 @@ class TimeFrame {
 	bool operator== (const TimeFrame& rhs) const;
 	void print();
 
-	vector<map<Interval,map<Interval,axiomSet>>> splitOnRel(map<Interval,map<Interval,axiomSet>>::const_iterator it) const;
-	vector<map<Interval,map<Interval,axiomSet>>> splitOnRel() const;
+	vector<map<Interval,map<Interval,axiom>>> splitRelation() const;
+	vector<map<Interval,axiom>> splitInnerRelation(map<Interval,axiomSet> iaxsm) const;
+	vector<axiom> splitAxiom(const axiomSet& axs) const;
 
   private:
 	map<Interval,map<Interval,axiomSet>> irm;
 	set<Interval> im;
+
+	vector<TimeDomain> tdv;
 
 	vector<vector<Interval>> getInvRoutes(const Interval& start, const Interval& target, set<int> closed) const;
 };
