@@ -3,44 +3,78 @@
 TimeFrame::TimeFrame() {
 }
 
-TimeFrame::TimeFrame(intervalRelMap irm) : irm(irm) {
+TimeFrame::TimeFrame(map<Interval,map<Interval,axiomSet>> intervalRelationMap, set<Interval> intervalMap) : irm(intervalRelationMap), im(intervalMap) {
 }
 
 TimeFrame::~TimeFrame() {
 }
 
+void TimeFrame::addRelation(const Interval& x, const Interval& y, const axiomSet& ax){
+	irm[x][y] = ax;
+}
+
 void TimeFrame::print() {
 	for (auto x : irm) {
 		for(auto y : x.second)
-			cout << x.first.getId() << "->" << y.first.getID() << " : " << y.second();
+			cout << x.first.getId() << "->" << y.first.getId() << " : " << y.second<< endl;
 	}
 }
 
 set<Interval> TimeFrame::getNeighbours(const Interval& target) const {
 	set<Interval> result;
-	for (auto x : irm) {
-		if (x.first == target)
-			result.insert(x.second.first.begin(),x.second.first.end());// does it WÖRK?
+	Interval x(-1);
+	Interval y(-1);
+	for (auto xm : irm) {
+		x = xm.first;
+		for(auto ym : xm.second){
+			y = ym.first;
+
+			if (x == target)
+				result.insert(y);
+			if (y == target)
+				result.insert(x);
+		}
 	}
 	return result;
 }
 
 
-bool TimeFrame::isConsistent(const Interval& a, const Interval& b) const {
-	return getCRelation(a,b).size()!=0;
+bool TimeFrame::isConsistent() const {
+
+	Interval x(-1);
+	Interval y(-1);
+	for (auto xm : irm) {
+		x = xm.first;
+		for(auto ym : xm.second){
+			y = ym.first;
+
+			if (getCRelation(x,y)==axiomSet({})) // inkonsistent Relation found
+				return false;
+		}
+	}
+
+
+	return true;
 }
 
-TimeFrame TimeFrame::getCTimeFrame() {
+TimeFrame TimeFrame::getCTimeFrame() const{
 	TimeFrame result;
 	axiomSet consistentRel;
+	Interval x(-1);
+	Interval y(-1);
+	for (auto xm : irm) {
+		x = xm.first;
+		for(auto ym : xm.second){
+			y = ym.first;
 
-	for (auto intervalRel : this->irm) {
-		consistentRel = this->getCRelation(intervalRel.first.first,intervalRel.first.second);
-		if (consistentRel.size()==0) {
-			cout << "throw inconsistency found"<< endl;
-			return TimeFrame();
+			consistentRel = this->getCRelation(x,y);
+			if (consistentRel.size()==0) {
+				cout << x.getId() << " " << y.getId() << endl; 
+				cout << "throw inconsistency found"<< endl;
+				return TimeFrame();
+			}
+			result.addRelation(x, y, consistentRel);
 		}
-		result.addRelation(intervalRel.first.first,intervalRel.first.second,consistentRel);
 	}
 	if ((*this) == result)
 		return result;//no change was detected -> final result
@@ -49,11 +83,11 @@ TimeFrame TimeFrame::getCTimeFrame() {
 }
 
 axiomSet TimeFrame::getCRelation(const Interval& a, const Interval&b) const {
-	auto routes = getRoutes(a,b);
-	Interval crntPos;
+	Interval crntPos(-1);
 	axiomSet temp;
-	axiomSet result(axiomSet({eq,st,gt,d,di,o,oi,s,si,f,fi}));
-
+	axiomSet result(axiomSet({eq,st,gt,d,di,o,oi,s,si,f,fi,m,mi}));
+	
+	auto routes = getRoutes(a,b);
 	if (routes.size() == 0) {
 		return temp;//empty Relationset
 	}
@@ -74,11 +108,18 @@ axiomSet TimeFrame::getCRelation(const Interval& a, const Interval&b) const {
 }
 
 axiomSet TimeFrame::getRelation(const Interval& a, const Interval&b) const {
-	for (auto pr : irm) {
-		if (pr.first.first == a && pr.first.second == b)
-			return pr.second;
-		else if (pr.first.first == b && pr.first.second == a)
-			return !(pr.second);
+	Interval x(-1);
+	Interval y(-1);
+	for (auto xm : irm) {
+		x = xm.first;
+		for(auto ym : xm.second){
+			y = ym.first;
+
+			if (x == a && y == b)
+				return ym.second;
+			else if (x == b && y == a)
+				return !(ym.second);
+		}
 	}
 	return axiomSet({});
 }
@@ -123,22 +164,24 @@ vector<vector<Interval>> TimeFrame::getInvRoutes(const Interval& current, const 
 }
 
 set<Interval> TimeFrame::getIntervals() const {
-	return intervalSet;
+	return im;
 }
 
-bool isConsitent() {
-	return false;
-}
-
-bool TimeFrame::operator== (const TimeFrame& rhs) {
+bool TimeFrame::operator== (const TimeFrame& rhs) const{
 	if ((this->irm.size() != rhs.irm.size()))
 		return false;
-
-	axiomSet temp;
-	for (auto intervalRel: irm) {
-		temp = rhs.getRelation(intervalRel.first.first,intervalRel.first.second);
-		if (!((axiomSet)intervalRel.second == temp))
+	Interval x(-1);
+	Interval y(-1);
+	for (auto xm : irm) {
+		x = xm.first;
+		if(xm.second.size() != (*rhs.irm.find(x)).second.size())
 			return false;
+		for(auto ym : xm.second){
+			y = ym.first;
+
+			if(!(this->getRelation(x,y) == rhs.getRelation(x,y)))
+				return false;
+		}
 	}
 	return true;
 }

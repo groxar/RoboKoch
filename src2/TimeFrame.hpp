@@ -12,28 +12,30 @@
 
 using namespace std;
 
+typedef map<Interval,map<Interval,axiomSet>> interRelMap;
+
 class TimeFrame {
   public:
 	TimeFrame();
-	TimeFrame(map<Interval,map<Interval,axiomSet>> irm);
+	TimeFrame(map<Interval,map<Interval,axiomSet>> intervalRelationMap, set<Interval> intervalMap);
 	~TimeFrame();
-	bool isConsistent();
-	bool isConsistent(const Interval& a, const Interval& b) const;
-	TimeFrame getCTimeFrame();
-	axiomSet getCRelation(const Interval& a, const Interval& b) const;//RENAME IT
+	void addRelation(const Interval& x, const Interval& y, const axiomSet& ax);
+	bool isConsistent() const;
+	TimeFrame getCTimeFrame() const;
+	axiomSet getCRelation(const Interval& a, const Interval& b) const;
 	axiomSet getRelation(const Interval& a, const Interval& b) const;
 	vector<vector<Interval>> getRoutes(const Interval& start, const Interval& target) const;
 	set<Interval> getIntervals() const;
 	set<Interval> getNeighbours(const Interval& target) const;
-	bool operator== (const TimeFrame& rhs);
+	bool operator== (const TimeFrame& rhs) const;
 	void print();
 
-	vector<intervalRelMap> splitOnRel(intervalRelMap::const_iterator it) const;
-	vector<intervalRelMap> splitOnRel() const;
+	vector<map<Interval,map<Interval,axiomSet>>> splitOnRel(map<Interval,map<Interval,axiomSet>>::const_iterator it) const;
+	vector<map<Interval,map<Interval,axiomSet>>> splitOnRel() const;
 
   private:
-	set<Intervals> intervalSet;
 	map<Interval,map<Interval,axiomSet>> irm;
+	set<Interval> im;
 
 	vector<vector<Interval>> getInvRoutes(const Interval& start, const Interval& target, set<int> closed) const;
 };

@@ -1,8 +1,8 @@
 #include "Util.hpp"
 
 
-set<Interval> getIntervals(const string& intervalFilePath){
-	ifstream intervalFile(intervalFilePath); 
+set<Interval> getIntervals( istream& intervalFile){
+
 	set<Interval> result;
 	CSVReader csvRow;
 	int duration;
@@ -22,9 +22,8 @@ set<Interval> getIntervals(const string& intervalFilePath){
 	return result;
 }
 
-map<Interval,map<Interval,axiomSet>> getRelation(const string& timeFilePath, const set<Interval>& intervalSet){
+map<Interval,map<Interval,axiomSet>> getRelation( istream& timeFile, const set<Interval>& intervalSet){
 
-	ifstream timeFile(timeFilePath); 
 	map<Interval,map<Interval,axiomSet>> result;
 	CSVReader csvRow;
 	Interval firstInterval(-1);
@@ -47,9 +46,8 @@ map<Interval,map<Interval,axiomSet>> getRelation(const string& timeFilePath, con
 	return result;
 }
 
-map<Interval,Range> getTimeWindow(const string& relationFilePath, const set<Interval>& intervalSet){
+map<Interval,Range> getTimeWindow( istream& relationFile, const set<Interval>& intervalSet){
 
-	ifstream relationFile(relationFilePath); 
 	map<Interval,pair<int,int>> temp;
 	map<Interval,Range> result;
 	CSVReader csvRow;
@@ -67,7 +65,6 @@ map<Interval,Range> getTimeWindow(const string& relationFilePath, const set<Inte
 			time = stringToTime(csvRow[2]) + (dayCounter * 24 * 60);
 			if(csvRow[4].find("Folgetag")!= std::string::npos)
 			{
-				cout << "increased day counter"<< endl<< endl;
 				dayCounter++;
 				time += dayCounter * 24 * 60;
 			}

@@ -197,15 +197,13 @@ bool TimeDomain::testRules(){
 	return true;
 }
 
-bool defineRanges(){
+bool TimeDomain::defineRanges(){
 	bool result = true;
 
 	for(auto ira: iram)
 	{
-		if(ira.second.size==0)
+		if(ira.second.size()==0)
 			continue;			//the range is already just a single point
-
-
 	}
 
 

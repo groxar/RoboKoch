@@ -16,11 +16,12 @@ public:
 	bool areIntervalsInRange();
 	bool areRangesValid();
 	bool testRules();
+	bool defineRanges();
 	
 	map<Interval,Range> filterImpossibleRanges();
-	map<Interval,Range> iram;
 
 private:
 	map<Interval,map<Interval,axiomSet>> irm;
+	map<Interval,Range> iram;
 
 };

@@ -1,6 +1,7 @@
 #include "Interval.hpp"
 #include "axiomSet.hpp"
 #include "Util.hpp"
+#include "TimeFrame.hpp"
 #include "TimeDomain.hpp"
 #include "Range.hpp"
 
@@ -12,15 +13,75 @@
 using namespace std;
 
 
-int main() {
-	set<Interval> im = getIntervals("testData/A_002_Ablauf_Bsp.csv");
-	map<Interval,map<Interval,axiomSet>> iia = getRelation("testData/A_002_Beziehungen_Bsp.csv",im);
-	map<Interval,Range> itime = getTimeWindow("testData/A_002_DurchfuerungCC.csv",im);
-	/* for(auto i :itime)
+int main(int argc, char** argv) {
+
+	if(argc != 4){
+		cout << "Dateipfade zu den foldenden Dateien werden benötigt: \nAblauf\nBeziehung\nDurchfuerung" << endl;
+		return EXIT_FAILURE;
+	}
+
+	ifstream intervalFile(argv[1]);
+	ifstream relationFile(argv[2]);
+	ifstream timeFile(argv[3]);
+
+	if(!intervalFile.good()){
+		cout << "Der Dateipfad zu Interval ist ungültig" << endl;
+		return EXIT_FAILURE;
+	}
+	if(!relationFile.good()){
+		cout << "Der Dateipfad zu Beziehung ist ungültig" << endl;
+		return EXIT_FAILURE;
+	}
+	if(!timeFile.good()){
+		cout << "Der Dateipfad zu Durchfuerung ist ungültig" << endl;
+		return EXIT_FAILURE;
+	}
+
+
+	set<Interval> im = getIntervals(intervalFile);
+	map<Interval,map<Interval,axiomSet>> irm = getRelation(relationFile,im);
+	map<Interval,Range> itime = getTimeWindow(timeFile,im);
+
+	TimeFrame tf(irm, im);
+	
+	if(!tf.isConsistent()){
+		cout << "Die Beziehungen sind inkonsitent"<< endl;
+		return EXIT_FAILURE;
+	}
+	cout << "Die Beziehungen sind konsitent"<< endl;
+
+
+/* 
+	tf.print();
+	cout << tf.getRelation(Interval(2),Interval(3)) << endl;
+	cout << tf.getRelation(Interval(3),Interval(2)) << endl;
+	cout <<tf.getCRelation(Interval(2),Interval(3)) << endl;
+	vector<vector<Interval>> vvi =tf.getRoutes(Interval(2),Interval(3));
+	auto sn = tf.getNeighbours(Interval(2));
+	cout << "getNeighbours: ";
+	for(auto n: sn)
+	{
+		cout << n.getId() << " ";
+	}
+	cout << endl;
+	cout << "route count: "<< vvi.size()<< endl;
+	for(auto vi: vvi)
+	{
+		for(auto v: vi)
+		{
+			cout << v.getId()<< " ";
+		}
+		cout << endl;
+	}
+	tf.getCTimeFrame().print();
+
+	
+	 for(auto i :itime)
 	{
 		cout << i.first.getId() <<" " << i.second.getMin()/60 <<":"<<i.second.getMin()%60 << " "<< i.second.getMax()/60 <<":"<<i.second.getMax()%60 << endl;
 	}*/
-	TimeDomain td(iia,itime);
+	
+	/*TimeDomain td(irm,itime);
 	cout << "Intervals in Range: " << td.areIntervalsInRange() << endl;
 	cout << "Ranges valid: " << td.areRangesValid() << endl;
 	cout << td.testRules() << endl;
@@ -35,12 +96,10 @@ int main() {
 	cout << (tRange+5)/tRange2 << endl;
 	cout << tRange << endl;
 
-	cout << "Interval Range"<< endl;
-	printIRAM(td.iram);
 	cout << "Filtered Range"<<endl;
 	printIRAM(td.filterImpossibleRanges());
 	
 
-
-	return 0;
+*/
+	return EXIT_SUCCESS;
 }
